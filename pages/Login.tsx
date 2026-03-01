@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 import { Wallet, ArrowRight, AlertCircle, Lock, Mail } from 'lucide-react';
+import { useToast } from '../contexts/ToastContext';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -11,6 +12,7 @@ const Login: React.FC = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { addToast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,7 +20,9 @@ const Login: React.FC = () => {
     setLoading(true);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userName = userCredential.user.displayName || userCredential.user.email?.split('@')[0];
+      addToast(`Bem-vindo de volta, ${userName}!`, "success");
       navigate('/');
     } catch (err: any) {
       console.error(err);
@@ -105,6 +109,15 @@ const Login: React.FC = () => {
               )}
             </button>
           </form>
+
+          <div className="mt-8 text-center">
+            <p className="text-sm text-slate-500 font-medium">
+              Não tem uma conta?{' '}
+              <Link to="/register" className="text-slate-900 font-bold hover:underline hover:text-slate-700 transition-colors">
+                Criar conta
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>

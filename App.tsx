@@ -7,6 +7,7 @@ import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import Expenses from './pages/Expenses';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import Reports from './pages/Reports';
 import Settings from './pages/Settings';
 import Goals from './pages/Goals';
@@ -28,6 +29,7 @@ const App: React.FC = () => {
         <Router>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             
             <Route path="/" element={
               <ProtectedRoute>

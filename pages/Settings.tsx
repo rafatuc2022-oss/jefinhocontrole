@@ -80,7 +80,7 @@ const Settings: React.FC = () => {
         <div className="bg-white p-6 rounded-[32px] shadow-sm border border-slate-50 flex items-center gap-4">
            <div className="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center"><User size={32} /></div>
            <div>
-              <p className="text-lg font-black text-slate-800">{currentUser?.email?.split('@')[0]}</p>
+              <p className="text-lg font-black text-slate-800">{currentUser?.displayName || currentUser?.email?.split('@')[0]}</p>
               <p className="text-xs font-bold text-slate-400">{currentUser?.email}</p>
            </div>
         </div>

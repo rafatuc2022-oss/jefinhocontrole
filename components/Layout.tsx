@@ -93,6 +93,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           })}
         </nav>
 
+        <div className="px-6 py-4 border-t border-slate-50">
+          <div className="flex items-center gap-3 p-2">
+            <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 font-bold text-xs">
+              {currentUser?.displayName?.charAt(0) || currentUser?.email?.charAt(0) || 'U'}
+            </div>
+            <div className="overflow-hidden">
+              <p className="text-sm font-black text-slate-800 truncate">{currentUser?.displayName || 'Usuário'}</p>
+              <p className="text-[10px] font-bold text-slate-400 truncate">{currentUser?.email}</p>
+            </div>
+          </div>
+        </div>
+
         <div className="p-6 border-t border-slate-50">
           <button onClick={() => logout()} className="flex items-center gap-3 px-4 py-3 w-full text-rose-500 hover:bg-rose-50 rounded-2xl text-sm font-bold transition-colors">
             <LogOut size={20} /> <span>Sair da conta</span>

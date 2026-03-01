@@ -32,12 +32,19 @@ const Dashboard: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [hideValues, setHideValues] = useState(false);
-  
   const [selectedDate, setSelectedDate] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
 
   useEffect(() => {
     if (currentUser) {
       loadData();
+      
+      // Welcome toast (once per session)
+      const sessionWelcome = sessionStorage.getItem('welcome_shown');
+      if (!sessionWelcome) {
+        const userName = currentUser.displayName?.split(' ')[0] || 'Usuário';
+        addToast(`Bem-vindo, ${userName}! Que bom ver você de volta.`, "success");
+        sessionStorage.setItem('welcome_shown', 'true');
+      }
     }
   }, [currentUser]);
 
@@ -142,7 +149,7 @@ const Dashboard: React.FC = () => {
              <ChevronRight className="rotate-180" size={20} />
           </button>
           <div className="flex flex-col items-center">
-             <h1 className="text-sm font-black uppercase tracking-[3px] opacity-70">MeuControle</h1>
+             <h1 className="text-sm font-black uppercase tracking-[3px] opacity-70">Bem-vindo, {currentUser?.displayName?.split(' ')[0] || 'Usuário'}!</h1>
              <p className="text-xl font-black">{fullMonths[currentMonth]} {currentYear}</p>
           </div>
           <button onClick={() => handleMonthOffset(1)} className="p-2 bg-white/10 rounded-full">

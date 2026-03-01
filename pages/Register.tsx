@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../firebase';
-import { Wallet, Check, AlertCircle, Mail, Lock } from 'lucide-react';
+import { Wallet, Check, AlertCircle, Mail, Lock, User } from 'lucide-react';
+import { useToast } from '../contexts/ToastContext';
 
 const Register: React.FC = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { addToast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,7 +30,11 @@ const Register: React.FC = () => {
     setLoading(true);
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(userCredential.user, {
+        displayName: name
+      });
+      addToast(`Conta criada com sucesso! Bem-vindo, ${name}!`, "success");
       // Auto login happens on success
       navigate('/');
     } catch (err: any) {
@@ -69,6 +76,21 @@ const Register: React.FC = () => {
            )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-slate-500 uppercase ml-1">Nome Completo</label>
+              <div className="relative">
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
+                <input
+                  type="text"
+                  required
+                  className="w-full pl-12 pr-4 py-3.5 bg-slate-50 text-slate-900 border-none rounded-2xl focus:ring-2 focus:ring-emerald-500/50 outline-none transition-all placeholder-slate-400"
+                  placeholder="Seu nome"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+            </div>
+
             <div className="space-y-1">
               <label className="text-xs font-bold text-slate-500 uppercase ml-1">E-mail</label>
               <div className="relative">
