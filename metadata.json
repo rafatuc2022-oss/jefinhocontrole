@@ -1,0 +1,5 @@
+{
+  "name": "MeuControle Financeiro",
+  "description": "Aplicativo de controle de gastos pessoais com dashboard, gestão de contas e relatórios. Instalável em iOS, Android e Windows (PWA).",
+  "requestFramePermissions": []
+}
